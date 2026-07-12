@@ -31,14 +31,14 @@ jobs:
       - name: Run Integration Startup Test
         run: |
           # Start the server in the background
-          python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 &
+          python -m uvicorn app.main:app --host 127.0.0.1 --port 8085 &
           PID=$!
           
           # Wait for server to start
           echo "Waiting for FastAPI server to start..."
           HEALTHY=false
           for i in {1..30}; do
-            if curl -s http://127.0.0.1:8000/health | grep -q '"status":"ok"'; then
+            if curl -s http://127.0.0.1:8085/health | grep -q '"status":"ok"'; then
               echo "FastAPI server started successfully and is healthy!"
               HEALTHY=true
               break

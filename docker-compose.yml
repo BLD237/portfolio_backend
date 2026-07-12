@@ -8,7 +8,7 @@ services:
     container_name: portfolio-backend
     restart: always
     ports:
-      - "8000:8000"
+      - "8085:8085"
     volumes:
       - ./portfolio.db:/app/portfolio.db
       - ./uploads:/app/uploads
