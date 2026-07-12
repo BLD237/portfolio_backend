@@ -16,103 +16,102 @@ def send_contact_notification(sender_name: str, sender_email: str, subject: str,
     <html>
     <head>
         <meta charset="utf-8">
-        <title>New Portfolio message</title>
+        <title>New Portfolio Message</title>
         <style>
             body {{
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-                background-color: #0b0f19;
-                color: #f3f4f6;
+                background-color: #10131a;
+                color: #e1e2ec;
                 margin: 0;
                 padding: 40px 20px;
             }}
             .container {{
                 max-width: 600px;
                 margin: 0 auto;
-                background-color: #111827;
-                border: 1px solid #1f2937;
+                background-color: #191b23;
+                border: 1px solid rgba(255, 255, 255, 0.08);
                 border-radius: 16px;
                 overflow: hidden;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
             }}
             .header {{
-                background: linear-gradient(135deg, #1e40af, #3b82f6);
-                padding: 30px;
+                background: linear-gradient(135deg, #4d8eff, #d0bcff);
+                padding: 35px 30px;
                 text-align: center;
-                border-bottom: 1px solid #1f2937;
             }}
             .header h1 {{
                 margin: 0;
-                font-size: 22px;
-                font-weight: 700;
-                color: #ffffff;
-                letter-spacing: -0.025em;
+                font-size: 24px;
+                font-weight: 800;
+                color: #0b0e15;
+                letter-spacing: -0.03em;
             }}
             .header p {{
-                margin: 5px 0 0 0;
-                font-size: 14px;
-                color: #bfdbfe;
+                margin: 6px 0 0 0;
+                font-size: 13px;
+                color: #10131a;
+                font-weight: 600;
+                opacity: 0.85;
             }}
             .content {{
                 padding: 40px 30px;
             }}
             .field-group {{
                 margin-bottom: 24px;
-                border-bottom: 1px solid #1f2937;
-                padding-bottom: 16px;
-            }}
-            .field-group:last-of-type {{
-                border-bottom: none;
-                padding-bottom: 0;
             }}
             .label {{
-                font-size: 12px;
+                font-size: 11px;
                 text-transform: uppercase;
-                letter-spacing: 0.05em;
-                color: #9ca3af;
-                font-weight: 600;
-                margin-bottom: 6px;
+                letter-spacing: 0.1em;
+                color: #adc6ff;
+                font-weight: 700;
+                margin-bottom: 8px;
             }}
             .value {{
                 font-size: 16px;
-                color: #f3f4f6;
+                color: #e1e2ec;
                 line-height: 1.5;
             }}
+            .value strong {{
+                color: #ffffff;
+            }}
             .message-box {{
-                background-color: #1f2937;
-                border-left: 4px solid #3b82f6;
+                background-color: #1d2027;
+                border: 1px solid rgba(255, 255, 255, 0.05);
+                border-left: 4px solid #4d8eff;
                 border-radius: 8px;
-                padding: 20px;
+                padding: 22px;
                 font-size: 15px;
-                color: #e5e7eb;
+                color: #e1e2ec;
                 line-height: 1.6;
                 white-space: pre-wrap;
-                margin-top: 10px;
+                margin-top: 8px;
             }}
             .footer {{
-                background-color: #0b0f19;
-                padding: 20px 30px;
+                background-color: #0b0e15;
+                padding: 30px;
                 text-align: center;
-                border-top: 1px solid #1f2937;
+                border-top: 1px solid rgba(255, 255, 255, 0.05);
             }}
             .reply-btn {{
                 display: inline-block;
-                background-color: #3b82f6;
-                color: #ffffff !important;
+                background-color: #4d8eff;
+                color: #0b0e15 !important;
                 text-decoration: none;
                 font-weight: 700;
                 font-size: 14px;
-                padding: 12px 24px;
+                padding: 14px 28px;
                 border-radius: 8px;
-                margin-top: 10px;
-                transition: background-color 150ms ease;
+                letter-spacing: -0.01em;
+                box-shadow: 0 4px 14px rgba(77, 142, 255, 0.3);
             }}
             .reply-btn:hover {{
-                background-color: #2563eb;
+                background-color: #adc6ff;
             }}
             .footer-text {{
                 font-size: 12px;
-                color: #6b7280;
-                margin-top: 15px;
+                color: #8c909f;
+                margin-top: 20px;
             }}
         </style>
     </head>
