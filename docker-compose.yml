@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: portfolio-backend
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./portfolio.db:/app/portfolio.db
+      - ./uploads:/app/uploads
+    env_file:
+      - .env
