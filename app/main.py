@@ -14,7 +14,13 @@ settings = get_settings()
 
 
 def create_app() -> FastAPI:
-    app = FastAPI(title=settings.app_name)
+    is_prod = settings.environment.lower() == "production"
+    app = FastAPI(
+        title=settings.app_name,
+        docs_url=None if is_prod else "/docs",
+        redoc_url=None if is_prod else "/redoc",
+        openapi_url=None if is_prod else "/openapi.json",
+    )
     os.makedirs("uploads", exist_ok=True)
     os.makedirs("data", exist_ok=True)
     app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")

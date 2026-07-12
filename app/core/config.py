@@ -7,6 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     app_name: str = "Mufor Belmond Piannow Portfolio API"
     api_prefix: str = "/api"
+    environment: str = "development"
     database_url: str = f"sqlite:///{Path(__file__).resolve().parents[2] / 'portfolio.db'}"
     secret_key: str = "change-this-secret-in-production"
     access_token_expire_minutes: int = 60 * 24
