@@ -10,7 +10,7 @@ services:
     ports:
       - "8085:8085"
     volumes:
-      - ./portfolio.db:/app/portfolio.db
+      - ./data:/app/data
       - ./uploads:/app/uploads
     env_file:
       - .env

@@ -12,7 +12,7 @@ This documentation explains how to deploy the entire portfolio ecosystem, includ
 ## 🚀 Step 1: Backend Environment Setup
 Create a production `.env` file inside `/backend/.env` containing:
 ```env
-DATABASE_URL=sqlite:///./portfolio.db
+DATABASE_URL=sqlite:///./data/portfolio.db
 SECRET_KEY=generate-a-strong-random-key-here
 ADMIN_EMAIL=admin@muforbelmond.tech
 ADMIN_PASSWORD=SetYourSecureAdminPasswordHere

@@ -16,6 +16,7 @@ settings = get_settings()
 def create_app() -> FastAPI:
     app = FastAPI(title=settings.app_name)
     os.makedirs("uploads", exist_ok=True)
+    os.makedirs("data", exist_ok=True)
     app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
     app.add_middleware(
