@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
 from app.core.config import get_settings
-from app.core.security import get_password_hash
+from app.core.security import get_password_hash, verify_password
 from app.models.admin import AdminUser
 from app.models.content import ContentItem
 from app.services.analytics import seed_mock_analytics
@@ -151,6 +151,11 @@ def seed_database(db: Session) -> None:
                 hashed_password=get_password_hash(settings.admin_password),
             )
         )
+    else:
+        admin.name = admin.name or "Mufor Belmond Piannow"
+        admin.is_active = True
+        if not verify_password(settings.admin_password, admin.hashed_password):
+            admin.hashed_password = get_password_hash(settings.admin_password)
 
     for item in SEED_CONTENT:
         exists = (
