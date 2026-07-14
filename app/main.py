@@ -51,7 +51,18 @@ def create_app() -> FastAPI:
     app.include_router(analytics.router, prefix=settings.api_prefix)
     app.include_router(contact.router, prefix=settings.api_prefix)
     app.include_router(upload.router, prefix=settings.api_prefix)
-    for module in ["projects", "blog", "articles", "gallery", "experience", "skills", "profile"]:
+    for module in [
+        "projects",
+        "blog",
+        "articles",
+        "gallery",
+        "experience",
+        "skills",
+        "services",
+        "testimonials",
+        "credentials",
+        "profile",
+    ]:
         app.include_router(build_module_router(module), prefix=settings.api_prefix)
 
     return app

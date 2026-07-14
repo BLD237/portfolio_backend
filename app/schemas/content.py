@@ -4,7 +4,18 @@ from typing import Any
 from pydantic import BaseModel, EmailStr, Field
 
 
-VALID_MODULES = {"projects", "blog", "articles", "gallery", "experience", "skills", "profile"}
+VALID_MODULES = {
+    "projects",
+    "blog",
+    "articles",
+    "gallery",
+    "experience",
+    "skills",
+    "services",
+    "testimonials",
+    "credentials",
+    "profile",
+}
 VALID_STATUSES = {"draft", "published", "archived"}
 
 
