@@ -1,11 +1,13 @@
 import os
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from app.api.routes import auth, contact, dashboard, analytics, upload
 from app.api.routes.content_modules import build_module_router
-from app.core.config import get_settings
+from app.core.config import BACKEND_DIR, get_settings
 from app.db.session import Base, SessionLocal, engine
 from app.seed import seed_database
 
@@ -13,17 +15,38 @@ from app.seed import seed_database
 settings = get_settings()
 
 
+def initialize_database() -> None:
+    Base.metadata.create_all(bind=engine)
+    db = SessionLocal()
+    try:
+        seed_database(db)
+    except Exception:
+        db.rollback()
+        raise
+    finally:
+        db.close()
+
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    initialize_database()
+    yield
+
+
 def create_app() -> FastAPI:
     is_prod = settings.environment.lower() == "production"
+    uploads_dir = BACKEND_DIR / "uploads"
+    data_dir = BACKEND_DIR / "data"
     app = FastAPI(
         title=settings.app_name,
         docs_url=None if is_prod else "/docs",
         redoc_url=None if is_prod else "/redoc",
         openapi_url=None if is_prod else "/openapi.json",
+        lifespan=lifespan,
     )
-    os.makedirs("uploads", exist_ok=True)
-    os.makedirs("data", exist_ok=True)
-    app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+    os.makedirs(uploads_dir, exist_ok=True)
+    os.makedirs(data_dir, exist_ok=True)
+    app.mount("/uploads", StaticFiles(directory=uploads_dir), name="uploads")
 
     app.add_middleware(
         CORSMiddleware,
@@ -32,15 +55,6 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
-
-    @app.on_event("startup")
-    def startup() -> None:
-        Base.metadata.create_all(bind=engine)
-        db = SessionLocal()
-        try:
-            seed_database(db)
-        finally:
-            db.close()
 
     @app.get("/health")
     def health():

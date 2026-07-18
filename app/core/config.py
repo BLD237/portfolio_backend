@@ -1,14 +1,18 @@
 from functools import lru_cache
 from pathlib import Path
 
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+BACKEND_DIR = Path(__file__).resolve().parents[2]
 
 
 class Settings(BaseSettings):
     app_name: str = "Mufor Belmond Piannow Portfolio API"
     api_prefix: str = "/api"
     environment: str = "development"
-    database_url: str = f"sqlite:///{Path(__file__).resolve().parents[2] / 'portfolio.db'}"
+    database_url: str = f"sqlite:///{BACKEND_DIR / 'portfolio.db'}"
     secret_key: str = "change-this-secret-in-production"
     access_token_expire_minutes: int = 60 * 24
     admin_email: str = "admin@belmond.dev"
@@ -23,11 +27,26 @@ class Settings(BaseSettings):
     smtp_password: str = ""
     smtp_from_email: str = "muforbelmond20@gmail.com"
 
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
+    # Resolve the environment file from the backend directory so settings do
+    # not silently change when Uvicorn is launched from a different cwd.
+    model_config = SettingsConfigDict(
+        env_file=BACKEND_DIR / ".env",
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
 
     @property
     def allowed_origins(self) -> list[str]:
         return [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
+
+    @field_validator("database_url")
+    @classmethod
+    def resolve_relative_sqlite_path(cls, value: str) -> str:
+        prefix = "sqlite:///"
+        if value.startswith(prefix) and not value.startswith("sqlite:////"):
+            database_path = Path(value[len(prefix):])
+            return f"{prefix}{(BACKEND_DIR / database_path).resolve()}"
+        return value
 
 
 @lru_cache

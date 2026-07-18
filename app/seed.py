@@ -1,3 +1,4 @@
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from app.core.config import get_settings
@@ -210,22 +211,43 @@ SEED_CONTENT = [
 ]
 
 
-def seed_database(db: Session) -> None:
+def seed_admin_user(db: Session) -> AdminUser:
+    """Create or synchronize the configured admin account.
+
+    This is committed separately from optional demo content so a failure while
+    seeding that content cannot roll back the account needed to sign in.
+    """
     settings = get_settings()
-    admin = db.query(AdminUser).filter(AdminUser.email == settings.admin_email).first()
+    email = settings.admin_email.strip().lower()
+    if not email or not settings.admin_password:
+        raise RuntimeError("ADMIN_EMAIL and ADMIN_PASSWORD must be configured")
+
+    admin = (
+        db.query(AdminUser)
+        .filter(func.lower(AdminUser.email) == email)
+        .first()
+    )
     if not admin:
-        db.add(
-            AdminUser(
-                email=settings.admin_email,
-                name="Mufor Belmond Piannow",
-                hashed_password=get_password_hash(settings.admin_password),
-            )
+        admin = AdminUser(
+            email=email,
+            name="Mufor Belmond Piannow",
+            hashed_password=get_password_hash(settings.admin_password),
         )
+        db.add(admin)
     else:
+        admin.email = email
         admin.name = admin.name or "Mufor Belmond Piannow"
         admin.is_active = True
         if not verify_password(settings.admin_password, admin.hashed_password):
             admin.hashed_password = get_password_hash(settings.admin_password)
+
+    db.commit()
+    db.refresh(admin)
+    return admin
+
+
+def seed_database(db: Session) -> None:
+    seed_admin_user(db)
 
     for item in SEED_CONTENT:
         exists = (

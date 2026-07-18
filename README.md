@@ -30,6 +30,10 @@ SMTP_PASSWORD=your-gmail-app-specific-password
 SMTP_FROM_EMAIL=muforbelmond20@gmail.com
 ```
 
+The backend creates the configured admin account automatically during startup.
+If the account already exists, startup reactivates it and synchronizes its
+password with `ADMIN_PASSWORD`, so the `.env` credentials are authoritative.
+
 ---
 
 ## 🐳 Step 2: Deployment Methods
