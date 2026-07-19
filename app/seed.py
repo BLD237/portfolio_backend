@@ -204,7 +204,7 @@ SEED_CONTENT = [
         "summary": "Software Engineer and Data Scientist",
         "body": "I build software, data systems, AI workflows, backend APIs, and mobile products from Cameroon with a practical, product-focused engineering style.",
         "image_url": "https://avatars.githubusercontent.com/u/161585619?v=4",
-        "external_url": "muforbelmond20@gmail.com",
+        "external_url": "info@muforbelmond.tech",
         "sort_order": 1,
         "tags": '[]',
     },
@@ -258,6 +258,12 @@ def seed_database(db: Session) -> None:
         if not exists:
             row = {"status": "published", "metadata_json": "{}", "external_url": "", "image_url": "", **item}
             db.add(ContentItem(**row))
+        elif (
+            item["module"] == "profile"
+            and item["slug"] == "main"
+            and exists.external_url == "muforbelmond20@gmail.com"
+        ):
+            exists.external_url = "info@muforbelmond.tech"
 
     # Seed mock analytics data
     seed_mock_analytics(db, count=200)
